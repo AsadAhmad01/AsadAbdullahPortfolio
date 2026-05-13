@@ -381,6 +381,7 @@ export const projects: Project[] = [
     image: "/assets/projects/blight.png",
     categories: ["all", "flutter", "ai-ml"],
     techStack: ["Flutter", "TFLite", "BLoC", "Drift", "Clean Architecture"],
+    githubUrl: "https://github.com/AsadAhmad01/blight",
   },
 ];
 

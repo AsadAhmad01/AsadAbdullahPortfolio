@@ -28,7 +28,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
   return (
     <AnimatePresence>
-      {project && project.featuredDetails && (
+      {project && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -54,7 +54,9 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               bg-midnight-50/95 backdrop-blur-xl border-b border-white/10">
               <div>
                 <h2 className="text-2xl font-bold font-display gradient-text">{project.name}</h2>
-                <p className="text-slate-400 text-sm mt-1">{project.featuredDetails.tagline}</p>
+                <p className="text-slate-400 text-sm mt-1">
+                  {project.featuredDetails?.tagline || project.tagline}
+                </p>
               </div>
               <button
                 onClick={onClose}
@@ -67,6 +69,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             </div>
 
             <div className="p-6 space-y-6">
+              {/* Description (Visible if no featuredDetails) */}
+              {!project.featuredDetails && (
+                <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    {project.description}
+                  </p>
+                </div>
+              )}
+
               {/* Tech Stack */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
@@ -88,60 +99,71 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </div>
               </div>
 
-              {/* Key Features */}
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <Zap size={16} className="text-blue-400" />
-                  <h3 className="text-sm font-semibold text-blue-400 uppercase tracking-widest">
-                    Key Features
-                  </h3>
+              {project.featuredDetails ? (
+                <>
+                  {/* Key Features */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Zap size={16} className="text-blue-400" />
+                      <h3 className="text-sm font-semibold text-blue-400 uppercase tracking-widest">
+                        Key Features
+                      </h3>
+                    </div>
+                    <ul className="space-y-2">
+                      {project.featuredDetails.keyFeatures.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3 text-slate-300 text-sm leading-relaxed">
+                          <CheckCircle size={15} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Architecture */}
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Layers size={16} className="text-purple-400" />
+                      <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-widest">
+                        Architecture
+                      </h3>
+                    </div>
+                    <p className="text-slate-300 text-sm leading-relaxed">{project.featuredDetails.architecture}</p>
+                  </div>
+
+                  {/* Challenges Solved */}
+                  <div>
+                    <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-3">
+                      🛠 Challenges Solved
+                    </h3>
+                    <ul className="space-y-2">
+                      {project.featuredDetails.challengesSolved.map((c, i) => (
+                        <li key={i} className="flex items-start gap-3 text-slate-300 text-sm leading-relaxed">
+                          <span className="w-5 h-5 rounded-full bg-orange-500/15 border border-orange-500/25
+                            text-orange-300 text-xs flex items-center justify-center flex-shrink-0 font-bold mt-0.5">
+                            {i + 1}
+                          </span>
+                          {c}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Impact */}
+                  <div className="p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
+                    <h3 className="text-sm font-semibold text-cyan-300 uppercase tracking-widest mb-2">
+                      ✨ Impact
+                    </h3>
+                    <p className="text-slate-200 text-sm leading-relaxed italic">{project.featuredDetails.impact}</p>
+                  </div>
+                </>
+              ) : (
+                <div className="p-8 rounded-2xl border border-dashed border-white/10 flex flex-col items-center justify-center text-center">
+                  <p className="text-slate-500 text-sm italic">
+                    Additional case study details for this project are currently being documented. 
+                    Stay tuned for a deep dive into its architecture and challenges!
+                  </p>
                 </div>
-                <ul className="space-y-2">
-                  {project.featuredDetails.keyFeatures.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3 text-slate-300 text-sm leading-relaxed">
-                      <CheckCircle size={15} className="text-emerald-400 flex-shrink-0 mt-0.5" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Architecture */}
-              <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-2 mb-2">
-                  <Layers size={16} className="text-purple-400" />
-                  <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-widest">
-                    Architecture
-                  </h3>
-                </div>
-                <p className="text-slate-300 text-sm leading-relaxed">{project.featuredDetails.architecture}</p>
-              </div>
-
-              {/* Challenges Solved */}
-              <div>
-                <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-3">
-                  🛠 Challenges Solved
-                </h3>
-                <ul className="space-y-2">
-                  {project.featuredDetails.challengesSolved.map((c, i) => (
-                    <li key={i} className="flex items-start gap-3 text-slate-300 text-sm leading-relaxed">
-                      <span className="w-5 h-5 rounded-full bg-orange-500/15 border border-orange-500/25
-                        text-orange-300 text-xs flex items-center justify-center flex-shrink-0 font-bold mt-0.5">
-                        {i + 1}
-                      </span>
-                      {c}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Impact */}
-              <div className="p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20">
-                <h3 className="text-sm font-semibold text-cyan-300 uppercase tracking-widest mb-2">
-                  ✨ Impact
-                </h3>
-                <p className="text-slate-200 text-sm leading-relaxed italic">{project.featuredDetails.impact}</p>
-              </div>
+              )}
 
               {/* GitHub Link */}
               {project.githubUrl && (

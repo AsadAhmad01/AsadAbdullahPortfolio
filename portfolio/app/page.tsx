@@ -4,12 +4,16 @@ import { About } from "@/components/About";
 import { Skills } from "@/components/Skills";
 import { Experience } from "@/components/Experience";
 import { Projects } from "@/components/Projects";
-import { GitHubActivity } from "@/components/GitHubActivity";
 import { Awards } from "@/components/Awards";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 
-export default function Home() {
+import { getLinktreeData } from "@/lib/linktree";
+
+export const revalidate = 86400; // daily ISR
+
+export default async function Home() {
+  const { liveApps, githubRepos } = await getLinktreeData();
   return (
     <main className="min-h-screen bg-midnight overflow-x-hidden">
       <Navbar />
@@ -17,8 +21,7 @@ export default function Home() {
       <About />
       <Skills />
       <Experience />
-      <Projects />
-      <GitHubActivity />
+      <Projects liveApps={liveApps} githubRepos={githubRepos} />
       <Awards />
       <Contact />
       <Footer />

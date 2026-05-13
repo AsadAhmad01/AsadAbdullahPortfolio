@@ -14,6 +14,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "raw.githubusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "ugc.production.linktr.ee",
+      },
+      {
+        protocol: "https",
+        hostname: "assets.production.linktr.ee",
+      },
     ],
     formats: ["image/avif", "image/webp"],
   },

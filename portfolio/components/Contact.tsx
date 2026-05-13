@@ -58,40 +58,8 @@ const colorMap: Record<string, string> = {
 };
 
 export function Contact() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      toast.error("Please fill in all fields.");
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await emailjs.sendForm(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "service_id",
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "template_id",
-        formRef.current!,
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "public_key"
-      );
-      toast.success("Message sent! I'll get back to you soon.", { duration: 5000 });
-      setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      toast.error("Failed to send. Please email me directly at haalim376@gmail.com");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
-    <section id="contact" className="relative">
+    <section id="contact" className="relative py-24 overflow-hidden">
       <Toaster
         position="bottom-right"
         toastOptions={{
@@ -99,10 +67,13 @@ export function Contact() {
         }}
       />
 
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96
-        rounded-full bg-blue-600/5 blur-[120px] pointer-events-none" />
+      {/* Decorative Blobs */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px]
+        rounded-full bg-blue-600/10 blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96
+        rounded-full bg-purple-600/5 blur-[100px] pointer-events-none" />
 
-      <div className="container-portfolio">
+      <div className="container-portfolio relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -115,141 +86,75 @@ export function Contact() {
           <h2 className="section-heading text-white">
             Let&apos;s <span className="gradient-text">Connect</span>
           </h2>
-          <p className="text-slate-400 mt-4 max-w-xl mx-auto">
-            Have a project in mind or want to discuss mobile AI, WebRTC, or Web3? I&apos;m always open to interesting opportunities.
+          <p className="text-slate-400 mt-4 max-w-2xl mx-auto">
+            Ready to bring your mobile app vision to life? Whether it&apos;s AI integration, WebRTC systems, or high-performance Flutter/Android development, I&apos;m just a click away.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              noValidate
-              className="space-y-5"
+        {/* Contact Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
+          {directLinks.map((link, i) => (
+            <motion.a
+              key={link.id}
+              href={link.href}
+              target={link.id !== "email-link" ? "_blank" : undefined}
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className={`group relative flex flex-col p-8 rounded-3xl border
+                bg-white/5 border-white/10 backdrop-blur-md 
+                hover:-translate-y-2 hover:shadow-2xl transition-all duration-300
+                overflow-hidden`}
+              id={link.id}
             >
-              <div>
-                <label htmlFor="contact-name" className="block text-sm font-medium text-slate-300 mb-2">
-                  Name
-                </label>
-                <input
-                  id="contact-name"
-                  name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Your name"
-                  required
-                  className="w-full px-4 py-3 rounded-xl text-sm
-                    bg-white/5 border border-white/10 text-white placeholder-slate-500
-                    focus:border-blue-500/50 focus:bg-white/8 focus:outline-none focus:ring-1 focus:ring-blue-500/30
-                    transition-all duration-200"
-                />
+              {/* Hover Gradient Background */}
+              <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300
+                bg-gradient-to-br ${link.color === 'blue' ? 'from-blue-500' : link.color === 'purple' ? 'from-purple-500' : link.color === 'green' ? 'from-emerald-500' : 'from-cyan-500'} to-transparent`} />
+
+              <div className={`w-14 h-14 rounded-2xl mb-6
+                flex items-center justify-center border border-white/10
+                group-hover:scale-110 transition-all duration-500
+                ${colorMap[link.color]}`}>
+                <link.icon size={28} strokeWidth={1.5} />
               </div>
 
-              <div>
-                <label htmlFor="contact-email" className="block text-sm font-medium text-slate-300 mb-2">
-                  Email
-                </label>
-                <input
-                  id="contact-email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="you@example.com"
-                  required
-                  className="w-full px-4 py-3 rounded-xl text-sm
-                    bg-white/5 border border-white/10 text-white placeholder-slate-500
-                    focus:border-blue-500/50 focus:bg-white/8 focus:outline-none focus:ring-1 focus:ring-blue-500/30
-                    transition-all duration-200"
-                />
+              <div className="flex-1">
+                <h3 className="text-white font-display font-bold text-xl mb-1 group-hover:text-blue-400 transition-colors">
+                  {link.label}
+                </h3>
+                <p className="text-slate-400 text-sm font-medium mb-4 break-all">
+                  {link.value}
+                </p>
               </div>
 
-              <div>
-                <label htmlFor="contact-message" className="block text-sm font-medium text-slate-300 mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Tell me about your project..."
-                  required
-                  rows={5}
-                  className="w-full px-4 py-3 rounded-xl text-sm resize-none
-                    bg-white/5 border border-white/10 text-white placeholder-slate-500
-                    focus:border-blue-500/50 focus:bg-white/8 focus:outline-none focus:ring-1 focus:ring-blue-500/30
-                    transition-all duration-200"
-                />
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 group-hover:text-white transition-colors">
+                <span>Reach Out</span>
+                <ExternalLink size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </div>
+            </motion.a>
+          ))}
 
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                id="submit-contact"
-                className="btn-primary w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 size={18} className="animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Send size={18} />
-                    Send Message
-                  </>
-                )}
-              </button>
-            </form>
-          </motion.div>
-
-          {/* Direct Links */}
+          {/* Special "Ready to Talk" Primary Card */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-3"
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="sm:col-span-2 lg:col-span-1 p-8 rounded-3xl bg-gradient-to-br from-blue-600 to-cyan-600
+              flex flex-col justify-center items-center text-center shadow-xl hover:scale-[1.02] transition-transform"
           >
-            <p className="text-slate-400 text-sm mb-6 leading-relaxed">
-              Prefer to reach out directly? Here are my active channels. Response time is typically within 24 hours.
+            <h3 className="text-white font-display font-bold text-2xl mb-3">Looking for a Senior Developer?</h3>
+            <p className="text-white/80 text-sm mb-6 max-w-[240px]">
+              Available for full-time roles and high-impact consultancy projects.
             </p>
-
-            {directLinks.map((link, i) => (
-              <motion.a
-                key={link.id}
-                href={link.href}
-                target={link.id !== "email-link" ? "_blank" : undefined}
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className={`flex items-center gap-4 p-4 rounded-xl border
-                  backdrop-blur-md hover:-translate-y-0.5 transition-all duration-200 group
-                  ${colorMap[link.color]}`}
-                id={link.id}
-              >
-                <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10
-                  flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <link.icon size={18} />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500 font-medium">{link.label}</p>
-                  <p className="text-white text-sm font-medium">{link.value}</p>
-                </div>
-                <ExternalLink size={14} className="ml-auto text-slate-600 group-hover:text-current transition-colors" />
-              </motion.a>
-            ))}
+            <a 
+              href="mailto:haalim376@gmail.com"
+              className="px-6 py-3 bg-white text-blue-600 rounded-xl font-bold text-sm hover:shadow-lg transition-all"
+            >
+              Start a Conversation
+            </a>
           </motion.div>
         </div>
       </div>

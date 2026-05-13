@@ -10,7 +10,6 @@ const navItems = [
   { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
-  { label: "GitHub", href: "#github" },
   { label: "Awards", href: "#awards" },
   { label: "Contact", href: "#contact" },
 ];
@@ -122,14 +121,14 @@ export function Navbar() {
           >
             <div className="container-portfolio py-4 flex flex-col gap-1">
               {navItems.map((item) => (
-                <button
+                <a
                   key={item.href}
+                  href={item.href}
                   onClick={() => handleNavClick(item.href)}
-                  className="text-left px-4 py-3 rounded-xl text-slate-300 hover:text-white
-                    hover:bg-white/5 transition-all duration-200 font-medium"
+                  className="text-left px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-200 font-medium"
                 >
                   {item.label}
-                </button>
+                </a>
               ))}
               <a
                 href="/resume.pdf"
