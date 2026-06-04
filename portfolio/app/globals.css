@@ -377,3 +377,7 @@ section {
     padding: 0 2.5rem;
   }
 }
+
+@keyframes grow-bar {
+  from { width: 0; }
+}

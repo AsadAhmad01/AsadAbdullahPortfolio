@@ -5,6 +5,7 @@ import { Skills } from "@/components/Skills";
 import { Experience } from "@/components/Experience";
 import { Projects } from "@/components/Projects";
 import { Awards } from "@/components/Awards";
+import { GitHubStats } from "@/components/GitHubStats";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 
@@ -23,8 +24,10 @@ export default async function Home() {
       <Experience />
       <Projects liveApps={liveApps} githubRepos={githubRepos} />
       <Awards />
+      <GitHubStats />
       <Contact />
       <Footer />
     </main>
   );
 }
+
