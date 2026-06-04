@@ -42,7 +42,7 @@ export function LanguageChart({
               backdropFilter: "blur(8px)",
             }}
             itemStyle={{ color: "#f0f4ff" }}
-            formatter={(value: number) => [`${value}%`, "Usage"]}
+            formatter={(value) => [`${Number(value)}%`, "Usage"] as [string, string]}
           />
           <Legend
             verticalAlign="bottom"

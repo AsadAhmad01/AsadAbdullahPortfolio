@@ -37,7 +37,7 @@ export function StarsChart({ contributions }: { contributions: ContributionDay[]
             itemStyle={{ color: "#f0f4ff", fontWeight: 600 }}
             labelStyle={{ color: "#94a3b8", marginBottom: "4px" }}
             labelFormatter={(label) => label}
-            formatter={(value: number) => [`${value} Commits`, "Activity"]}
+            formatter={(value) => [`${Number(value)} Commits`, "Activity"] as [string, string]}
           />
           <XAxis 
             dataKey="date" 
